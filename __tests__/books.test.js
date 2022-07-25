@@ -52,9 +52,9 @@ describe("GET /books/:isbn", function () {
     });
   });
 
-desscribe("POST /books", function () {
+describe("POST /books", function () {
     test("post a new book", async function () {
-        const response = await response(app).post(`/books`).send({
+        const response = await request(app).post(`/books`).send({
             isbn: '32794782',
           amazon_url: "https://taco.com",
           author: "mctest",
@@ -69,7 +69,7 @@ desscribe("POST /books", function () {
     });
 
     test("Book does not get created without required items", async function() {
-        const response = await (await request(app).post(`/books`)).send({year: 2021});
+        const response = await request(app).post(`/books`).send({year: 2021});
         expect(response.statusCode).toBe(400);
     });
 });
@@ -89,7 +89,7 @@ describe("PUT /books/:id", function () {
         expect(response.body.book.title).toBe("amazing update right?");
     });
 
-    test("Prevents an invalid book update", function () {
+    test("Prevents an invalid book update", async function () {
         const response = await request(app).put(`/books/${book_isbn}`).send({
             isbn: '32794782',
             amazon_url: "https://taco.com",
